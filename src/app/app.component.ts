@@ -2,34 +2,32 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-
-interface I_QUOTE {
-  id: number;
-  quote: string;
-  author: string;
-}
+import { environment } from '../environments/environment.development';
+import axios from 'axios';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
-  title = 'angular-tuto';
+export class AppComponent {
+  apiUrl: string = environment.API_URI;
 
-  quotes!: I_QUOTE[];
+  weatherData!: any;
 
-  constructor(private httpClient: HttpClient) {}
+  city!: string;
 
-  async getQuotes() {
-    const url = 'https://dummyjson.com/quotes';
-    const res: any = await firstValueFrom(this.httpClient.get(url));
-    console.log(res);
-    this.quotes = res.quotes;
-  }
+  async getWeather(): Promise<void> {
+    const res = await axios.get(
+      `${this.apiUrl}?q=${this.city}&appid=${environment.API_KEY}`
+    );
 
-  ngOnInit(): void {
-    this.getQuotes();
+    console.log(res.data);
+
+    this.weatherData = res.data;
+
+    this.city = '';
   }
 }

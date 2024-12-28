@@ -1,4 +1,39 @@
-<h1 class="vk-h2 pt-3 text-center">VK64 - Angular HttpClient</h1>
-<h2 class="vk-h3 pt-3 text-center">API Call</h2>
+<div class="w-screen h-screen">
+  <h1 class="vk-h2 pt-3 text-center">VK64 - Angular Weather APP</h1>
 
-{{ quotes | json }}
+  <div class="flex justify-center flex-col gap-3 items-center pt-4">
+    <form>
+      <div>
+        <label for="city" class="vk-form-label">City</label>
+        <input
+          type="text"
+          class="vk-form-input"
+          placeholder="City"
+          name="city"
+          [(ngModel)]="city"
+        />
+      </div>
+    </form>
+    <button
+      type="button"
+      class="vk-btn-blue"
+      (click)="getWeather()"
+      [disabled]="!city"
+    >
+      Get Weather
+    </button>
+  </div>
+
+  @if(weatherData){
+  <div class="p-3 flex justify-center">
+    <div class="border shadow-lg p-3 w-72 rounded-lg">
+      <h1 class="text-2xl font-bold text-center">{{ weatherData.name }}</h1>
+      <div class="pt-5">
+        <h2 class="text-xl text-center font-extrabold">
+          {{ weatherData.main.temp - 273.15 }} °C
+        </h2>
+      </div>
+    </div>
+  </div>
+  }
+</div>
